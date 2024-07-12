@@ -10,10 +10,10 @@ See the above repository for updates as well as full license text. */
 /* Change the --multirow-n-rows to change maximum number of rows before the rows will start to scroll  */
 
 :root{
-    --multirow-n-rows: 4;
-    --multirow-tab-min-width: 140px;
+    --multirow-n-rows: 8;
+    --multirow-tab-min-width: 188px;
     --multirow-tab-dynamic-width: 1; /* Change to 0 for fixed-width tabs using the above width. */
-    --tab-min-height: 24px !important;
+    --tab-min-height: 10px !important;
 }
 
 /* Scrollbar can't be clicked but the rows can be scrolled with mouse wheel */
@@ -79,20 +79,63 @@ See the above repository for updates as well as full license text. */
   display: flex !important;
   align-items: center; /* Fx <112 compatibility */
 }
-
+/*
 #alltabs-button,
 :root:not([customizing]) #TabsToolbar #new-tab-button,
 #tabbrowser-arrowscrollbox > spacer,
-.tabbrowser-tab::after{ display: none !important }
+.tabbrowser-tab::after{ display: none !important }*/
+
 
 /*--------------------my-stuff---------------------------------------------*/
-
-.tabbrowser-tab:not([selected="true"]) .tab-context-line{ display: none }
-
+/* Don't show colored contextline */
+.tabbrowser-tab .tab-context-line{ display: none }
 /*smol tabs*/
 .titlebar-buttonbox-container,
 .tab-close-button,
-.tab-label-container{
-  max-height: 24px !important;
+.tab-label-container,
+.tab-background,
+.tab-stack{
+  margin: 0px !important;
+  border-radius: 0px !important;
+  max-height: 19px !important;
+}
+.tabbrowser-tab, .tab-content{
+  padding-inline: 0px !important;
+  border-radius: 0px !important;
+  padding: 1px !important;
+}
+/* Reduce right spacer on tab bar */
+.titlebar-spacer[type="post-tabs"] {
+  display: none !important;
+}
+/* squares the mute button on hover */
+.tab-icon-overlay:not([pinned], [sharing], [crashed]):is([soundplaying], [muted], [activemedia-blocked]) {
+  border-radius: 0 !important;
+}
+
+
+:root[uidensity=compact] #urlbar,
+:root[uidensity=compact] .searchbar-textbox,
+root[uidensity=compact] #identity-box {
+  font-size: 14px !important;
+  min-height: 15px !important;
+  margin: 0px !important;
+}
+
+:root[uidensity=compact] #identity-box {
+  max-height: 15px;
+}
+
+:root[uidensity=compact] #nav-bar .toolbarbutton-1 {
+  padding: 0px !important;
+}
+
+:root[uidensity=compact] #navigator-toolbox {
+  --nav-bar-height: 15px !important;
+}
+
+#nav-bar {
+  border-top: 0 !important;
+  max-height: 15px;
 }
 
