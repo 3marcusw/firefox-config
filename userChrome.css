@@ -12,8 +12,8 @@ See the above repository for updates as well as full license text. */
 
 :root{
   --multirow-n-rows: 8; /* change maximum number of rows before the rows will start to scroll */
-  --multirow-tab-min-width: 180px;
-  --multirow-tab-dynamic-width: 1; /* Change to 0 for fixed-width tabs using the above width. */
+  --multirow-tab-min-width: 186px;
+  --multirow-tab-dynamic-width: 0; /* Change to 0 for fixed-width tabs using the above width. */
   --tab-min-height: 20px !important;
 }
 
