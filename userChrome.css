@@ -11,16 +11,14 @@ See the above repository for updates as well as full license text. */
  * userchrome.multirowtabs.scrollbar-handle.enabled - make scrollbar in tabs box respond to mouse, makes it imposiible to drag window from empty space in tabs box */
 
 :root{
-  --multirow-n-rows: 8; /* change maximum number of rows before the rows will start to scroll */
-  --multirow-tab-min-width: 189px;
-  --multirow-tab-dynamic-width: 0; /* Change to 0 for fixed-width tabs using the above width. */
-  --tab-min-height: 20px !important;
+  --multirow-n-rows: 3; /* change maximum number of rows before the rows will start to scroll */
+  --multirow-tab-min-width: 180px;
+  --multirow-tab-dynamic-width: 1; /* Change to 0 for fixed-width tabs using the above width. */
 }
 
 #tabbrowser-tabs{
   min-height: unset !important;
   padding-inline-start: 0px !important
-  margin: -4px;
 }
 
 @-moz-document url(chrome://browser/content/browser.xhtml){
@@ -64,7 +62,7 @@ See the above repository for updates as well as full license text. */
   flex-grow: var(--multirow-tab-dynamic-width) !important;
 }
 
-.tabbrowser-tab > stack{ width: 100%; height: 50% }
+.tabbrowser-tab > stack{ width: 100%; height: 100% }
 
 /* remove bottom margin so it doesn't throw off row height computation */
 #tabs-newtab-button{ margin-bottom: 0 !important; }
@@ -73,19 +71,25 @@ See the above repository for updates as well as full license text. */
   display: flex !important;
 }
 
-#alltabs-button,
+#alltabs-button[removable="false"],
 :root:not([customizing]) #TabsToolbar #new-tab-button,
 #tabbrowser-arrowscrollbox > spacer,
 .tabbrowser-tab::after{ display: none !important }
 
-@media (-moz-bool-pref: "userchrome.multirowtabs.full-width-tabs.enabled"){
+@media (-moz-bool-pref: "userchrome.multirowtabs.full-width-tabs.enabled"),
+       -moz-pref("userchrome.multirowtabs.full-width-tabs.enabled"){
   .tabbrowser-tab[fadein]:not([pinned]){ max-width: 100vw !important; }
 }
-@media (-moz-bool-pref: "userchrome.multirowtabs.scrollbar-handle.enabled"){
+@media (-moz-bool-pref: "userchrome.multirowtabs.scrollbar-handle.enabled"),
+       -moz-pref( "userchrome.multirowtabs.scrollbar-handle.enabled"){
   #tabbrowser-arrowscrollbox{ -moz-window-dragging: no-drag }
 }
-/* ------------------ MY STUFF -------------------- */
 
+/* Make tab groups collapse */
+tab-group[collapsed] .tabbrowser-tab[fadein]:not([pinned]){
+  min-width: 0 !important;
+}
+/*///////////// wow my stuff here ///////////*/
 /* Don't show colored contextline */
 .tabbrowser-tab .tab-context-line{ display: none }
 
