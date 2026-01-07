@@ -1,158 +1,158 @@
 /* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/multi-row_tabs.css made available under Mozilla Public License v. 2.0
 See the above repository for updates as well as full license text. */
 
-/* Makes tabs to appear on multiple lines
- * Tab reordering will not work and can't be made to work
- * You can use multi-row_tabs_window_control_patch.css to move window controls to nav-bar
- * You might want to move tabs-new-tab-button outside tabs toolbar for smoother behavior */
+/* Import the multi-row tabs CSS */
+@import url("firefox-csshacks/chrome/multi-row_tabs.css");
 
-/* SETTINGS (you need to create and set these prefs to true in about:config)
- * userchrome.multirowtabs.full-width-tabs.enabled  - make tabs grow horizontally to fill all available space
- * userchrome.multirowtabs.scrollbar-handle.enabled - make scrollbar in tabs box respond to mouse, makes it imposiible to drag window from empty space in tabs box */
-
-:root{
-  --multirow-n-rows: 3; /* change maximum number of rows before the rows will start to scroll */
-  --multirow-tab-min-width: 180px;
-  --multirow-tab-dynamic-width: 1; /* Change to 0 for fixed-width tabs using the above width. */
+/* ==================== COMPACT SETTINGS ==================== */
+:root {
+  /* Multi-row tab settings */
+  --multirow-n-rows: 6;
+  --multirow-tab-min-width: 160px;
+  --multirow-tab-dynamic-width: 0;
+  
+  /* Compact spacing adjustments */
+  --tab-min-height: 18px !important;           /* Reduce tab height */
+  --tab-block-margin: 0px !important;           /* No vertical spacing */
+  --inline-tab-padding: 2px !important;         /* Compact horizontal padding */
+  --toolbarbutton-inner-padding: 6px !important; /* Compact button padding */
+  
+  /* Remove rounded corners */
+  --tab-border-radius: 0px !important;
 }
 
-#tabbrowser-tabs{
-  min-height: unset !important;
-  padding-inline-start: 0px !important
+/* ==================== TABS TOOLBAR ==================== */
+#TabsToolbar {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
-@-moz-document url(chrome://browser/content/browser.xhtml){
-  #scrollbutton-up~spacer,
-  #scrollbutton-up,
-  #scrollbutton-down{ display: var(--scrollbutton-display-model,initial) }
-
-  scrollbox[part][orient="horizontal"] > slot,
-  scrollbox[part][orient="horizontal"]{
-    display: flex;
-    flex: 1;
-    flex-wrap: wrap;
-    overflow-y: auto;
-    max-height: calc((var(--tab-min-height) + 2 * var(--tab-block-margin,0px)) * var(--multirow-n-rows));
-    scrollbar-color: currentColor transparent;
-    scrollbar-width: thin;
-    scrollbar-gutter: stable;
-    scroll-snap-type: y mandatory;
-  }
-  scrollbox[part][orient="horizontal"] > slot{
-    overflow-x: hidden;
-  }
-}
-
-.scrollbox-clip[orient="horizontal"],
-#tabbrowser-arrowscrollbox{
-  overflow: -moz-hidden-unscrollable;
-  display: inline;
-  --scrollbutton-display-model: none;
-}
-
-.tabbrowser-tab{ scroll-snap-align: start; }
-
-#tabbrowser-tabs .tabbrowser-tab[pinned]{
-  position: static !important;
-  margin-inline-start: 0px !important;
-}
-
-.tabbrowser-tab[fadein]:not([pinned]){
-  min-width: var(--multirow-tab-min-width) !important;
-  flex-grow: var(--multirow-tab-dynamic-width) !important;
-}
-
-.tabbrowser-tab > stack{ width: 100%; height: 100% }
-
-/* remove bottom margin so it doesn't throw off row height computation */
-#tabs-newtab-button{ margin-bottom: 0 !important; }
-
-#tabbrowser-tabs[hasadjacentnewtabbutton][overflow] > #tabbrowser-arrowscrollbox > #tabbrowser-arrowscrollbox-periphery > #tabs-newtab-button {
-  display: flex !important;
-}
-
-#alltabs-button[removable="false"],
-:root:not([customizing]) #TabsToolbar #new-tab-button,
-#tabbrowser-arrowscrollbox > spacer,
-.tabbrowser-tab::after{ display: none !important }
-
-@media (-moz-bool-pref: "userchrome.multirowtabs.full-width-tabs.enabled"),
-       -moz-pref("userchrome.multirowtabs.full-width-tabs.enabled"){
-  .tabbrowser-tab[fadein]:not([pinned]){ max-width: 100vw !important; }
-}
-@media (-moz-bool-pref: "userchrome.multirowtabs.scrollbar-handle.enabled"),
-       -moz-pref( "userchrome.multirowtabs.scrollbar-handle.enabled"){
-  #tabbrowser-arrowscrollbox{ -moz-window-dragging: no-drag }
-}
-
-/* Make tab groups collapse */
-tab-group[collapsed] .tabbrowser-tab[fadein]:not([pinned]){
-  min-width: 0 !important;
-}
-/*///////////// wow my stuff here ///////////*/
-/* Don't show colored contextline */
-.tabbrowser-tab .tab-context-line{ display: none }
-
-/* Reduce right spacer on tab bar */
-.titlebar-spacer[type="post-tabs"] {
+/* Remove extra space for window controls */
+#TabsToolbar .titlebar-spacer {
   display: none !important;
 }
-/* squares the mute button on hover */
-.tab-icon-overlay:not([pinned], [sharing], [crashed]):is([soundplaying], [muted], [activemedia-blocked]) {
-  border-radius: 0 !important;
+
+/* Reduce titlebar height */
+#titlebar {
+  appearance: none !important;
 }
 
-:root[uidensity=compact] #urlbar,
-:root[uidensity=compact] .searchbar-textbox,
-root[uidensity=compact] #identity-box {
-  font-size: 14px !important;
-  min-height: 15px !important;
-  margin: 0px !important;
-  border-radius: 0 !important;
-  
+/* Make window controls overlay the tabs */
+.titlebar-buttonbox-container {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
 }
 
-:root[uidensity=compact] #identity-box {
-  max-height: 15px;
+/* ==================== TAB APPEARANCE ==================== */
+.tabbrowser-tab {
+  font-size: 12px !important;  /* Slightly smaller text */
+  padding-inline: 0px !important; /* Remove outer padding */
+  margin-inline: 2px !important; /* Add horizontal spacing between tabs */
+  height: var(--tab-min-height) !important; /* Force tight height */
 }
 
-:root[uidensity=compact] #nav-bar .toolbarbutton-1 {
+/* Tab background - tight fit */
+.tab-background {
+  margin-inline: 0 !important;
+  padding-inline: 0 !important;
+  margin-block: 0 !important;
+  padding-block: 0 !important;
+  border-radius: 0px !important; /* Square corners */
+  height: 100% !important;
+}
+
+/* Tab stack - remove vertical padding */
+.tabbrowser-tab > stack {
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+  height: 100% !important;
+}
+
+/* Tab content container - remove all padding and center */
+.tab-content {
+  padding-inline: 2px !important;
+  padding-block: 0 !important;
+  margin-block: 0 !important;
+  height: 100% !important;
+  align-items: center !important; /* Center content vertically */
+}
+
+/* Tab label - remove margins and tight line height */
+.tab-label {
+  margin-inline: 0px !important;
+  margin-block: 0px !important;
+  padding-block: 0px !important;
+  line-height: 1 !important; /* Tight line height */
+}
+
+/* Tab close button - smaller and vertically centered */
+.tab-close-button {
+  width: 12px !important;
+  height: 12px !important;
   padding: 0px !important;
+  margin-inline-end: 2px !important;
+  margin-block: 0 !important;
 }
 
-:root[uidensity=compact] #navigator-toolbox {
-  --nav-bar-height: 15px !important;
-  border-radius: 0 !important;
+/* Make the X icon itself smaller */
+.tab-close-button .toolbarbutton-icon {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* Favicon - minimal spacing and centered */
+.tab-icon-image {
+  margin-inline-end: 2px !important;
+  margin-block: 0 !important;
+}
+
+/* Tab text - remove extra spacing */
+.tab-text {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Tab label container - tight fit */
+.tab-label-container {
+  margin-inline: 0 !important;
+  margin-block: 0 !important;
+  padding-block: 0 !important;
+  height: 100% !important;
+  align-items: center !important;
+}
+
+/* ==================== HIDE COLORED LINE ABOVE TABS ==================== */
+
+.tab-context-line {
+  display: none !important;
+}
+
+/* ==================== NEW TAB BUTTON ==================== */
+#tabs-newtab-button {
+  padding: 0 !important;
+
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+}
+
+
+/* ==================== COMPACT NAVIGATION BAR ==================== */
+:root {
+  --toolbarbutton-inner-padding: 4px !important;
 }
 
 #nav-bar {
-  border-top: 0 !important;
-  max-height: 15px;
-  border-radius: 0 !important;
-}
-:root {
-
-  /* square the off most of the UI (selection buttons on hover, context menus, hamburger menus, etc) */
-  --toolbarbutton-border-radius: 0 !important;
-  --arrowpanel-menuitem-border-radius: 0 !important;
-  --arrowpanel-border-radius: 0 !important;
-  --tab-border-radius: 0 !important;
-  --subviewbutton-border-radius: 0 !important;
+  padding-block: 0px !important;
+  margin-block: 0px !important;
+  margin-top: 1px !important;
 }
 
-
-/* smol tabs */
-:root {
-  --tab-min-height: 20px !important;
-}
-.tabbrowser-tab {
-  /* Slim tabs with minimal white space */
-  height: 18px !important; 
-  padding: 0 !important; 
-  margin: 0 !important;
-}
-.tab-background {
-  /* Reduce tab background margins */
-  margin: 0 !important;
-  padding: 0 !important;
+#urlbar-container {
+  padding-block: 0px !important;
 }
